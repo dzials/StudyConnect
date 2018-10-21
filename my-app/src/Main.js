@@ -22,8 +22,8 @@ class Main extends Component {
           </ul>
           <div className="content">
             <Route exact path="/" component={Home}/>
-            <Route path="/scheduling" component={scheduling}/>
-            <Route path="/calendar" component={calendar}/>
+            <Route path="/scheduling" component={Scheduling}/>
+            <Route path="/calendar" component={Calendar}/>
           </div>
         </div>
       </HashRouter>
