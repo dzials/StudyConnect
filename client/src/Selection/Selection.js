@@ -1,33 +1,23 @@
 import React, { Component } from 'react';
-import { Jumbotron } from 'react-bootstrap'
-import { Typeahead } from 'react-bootstrap-typeahead'
+import { connect } from 'react-redux'
 
-// TODO - have this component source from redux
-export default class Selection extends Component {
+import Selector from './Selector'
+
+class Selection extends Component {
   render() {
-    let options = [
-      { type: "CSCI" },
-      { type: "BIOL" },
-      { type: "PSYC" }
-    ]
-
     return (
-      <div className="container">
-        <h1>
-          Select a class to find a study group for:
-        </h1>
-
-        <Typeahead
-          labelKey="type"
-          multiple={false}
-          options={options}
-          placeholder="Select a class"
-        />
-
-        <h1>
-          Available study groups:
-        </h1>
-      </div>
+      <Selector options={this.props.options}/>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+    options: state.courses.courses.courses
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(Selection)
