@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-//TODO: CSS styling
+import "./Login.css"
 
 //TODO: Have the component source from Redux
 //TODO: Create account form in state
@@ -26,14 +26,15 @@ export default class Login extends Component {
   }
 
   submitForm = event => {
-    //TODO: Log-in through backend
+    event.preventDefault();
+    alert("To be implemented");
   }
 
   render() {
     return (
       <div className="Login">
         <form onSubmit={this.submitForm}>
-          <FormGroup ControlId="email" bsSize="Large">
+          <FormGroup controlId="email" bsSize="Large">
             <ControlLabel>Email</ControlLabel>
             <FormControl
               autoFocus
@@ -42,11 +43,11 @@ export default class Login extends Component {
               onChange={this.updateInfo}
             />
           </FormGroup>
-          <FormGroup ControlId="password" bsSize="Large">
+          <FormGroup c ontrolId="password" bsSize="Large">
             <ControlLabel>Password</ControlLabel>
             <FormControl
               value={this.state.password}
-              onChange={this.handleChange}
+              onChange={this.updateInfo}
               type="password"
             />
           </FormGroup>
