@@ -4,7 +4,6 @@ import "./Login.css"
 
 //TODO: Use fetch API to parcel data to json and query back-end
 //TODO: Have the component source from Redux
-//TODO: In sign up check if password matches confirm password
 export default class Login extends Component {
 
   constructor(props) {
@@ -24,7 +23,17 @@ export default class Login extends Component {
 
   //Make sure form is valid
   formIsValid() {
-    return this.state.email.length > 0 && this.state.password.length > 0;
+    if(this.state.isCreateNew) {
+      return this.state.email.length > 0 && this.state.password.length > 0 && this.state.confirmPw.length > 0 && this.state.rcs.length > 0 && this.pwMatch();
+    }
+    else if(!this.state.isCreateNew) {
+      return this.state.email.length > 0 && this.state.password.length > 0;
+    }
+  }
+
+  //In account registration make sure passwords match
+  pwMatch() {
+    return this.state.password===this.state.confirmPw;
   }
 
   //Update state as form is filled out
@@ -95,6 +104,15 @@ export default class Login extends Component {
     }
     //Sign Up form
     else if(this.state.isCreateNew) {
+
+      let pwNoMatch;
+      if(!this.pwMatch()) {
+        pwNoMatch = <p>Passwords must match!</p>
+      }
+      else {
+        pwNoMatch = <p></p>;
+      }
+
       return (
         <div className="SignUp">
           <form onSubmit={this.submitForm}>
@@ -131,6 +149,7 @@ export default class Login extends Component {
                 type="password"
               />
             </FormGroup>
+            {pwNoMatch}
             <Button
               block
               bsSize="Large"
