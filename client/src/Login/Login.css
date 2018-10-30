@@ -7,4 +7,21 @@
         margin: 0px auto;
         max-width: 320px;
     }
+
+    .Login h2 {
+        text-align: center;
+    }
+
+    .SignUp {
+        padding: 45px 0;
+    }
+
+    .SignUp form {
+        margin: 0px auto;
+        max-width: 320px;
+    }
+
+    .SignUp h2 {
+        text-align: center;
+    }
 }
