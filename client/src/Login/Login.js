@@ -4,7 +4,6 @@ import "./Login.css"
 
 //TODO: Use fetch API to parcel data to json and query back-end
 //TODO: Have the component source from Redux
-//TODO: Routing in submitForm for login and sign up
 //TODO: In sign up check if password matches confirm password
 export default class Login extends Component {
 
@@ -23,30 +22,41 @@ export default class Login extends Component {
     this.loginToAcct = this.loginToAcct.bind(this);
   }
 
+  //Make sure form is valid
   formIsValid() {
     return this.state.email.length > 0 && this.state.password.length > 0;
   }
 
+  //Update state as form is filled out
   updateInfo = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
   }
 
+  //Package form data into appropriate .JSON and query back end
   submitForm = event => {
     event.preventDefault();
-    alert("To be implemented");
+    if(this.state.isCreateNew) {
+      alert("Account creation to be implemented");
+    }
+    else if(!this.state.isCreateNew) {
+      alert("Login functionality to be implemented");
+    }
   }
 
+  //Switch to account registration state
   registerAcct() {
     this.setState({isCreateNew:true});
   }
 
+  //Switch to login state
   loginToAcct() {
     this.setState({isCreateNew:false});
   }
 
   render() {
+    //Login form
     if(!this.state.isCreateNew) {
       return (
         <div className="Login">
@@ -83,6 +93,7 @@ export default class Login extends Component {
         </div>
       )
     }
+    //Sign Up form
     else if(this.state.isCreateNew) {
       return (
         <div className="SignUp">
