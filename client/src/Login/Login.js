@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./Login.css"
 
-//TODO: fetch API
-
+//TODO: Use fetch API to parcel data to json and query back-end
 //TODO: Have the component source from Redux
-//TODO: Create account form in state
+//TODO: Routing in submitForm for login and sign up
+//TODO: In sign up check if password matches confirm password
 export default class Login extends Component {
 
   constructor(props) {
