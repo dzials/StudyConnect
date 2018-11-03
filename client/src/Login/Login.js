@@ -102,7 +102,8 @@ export default class Login extends Component {
         </div>
       )
     }
-    //Sign Up form
+
+    //If password field does not match confirm password
     else if(this.state.isCreateNew) {
 
       let pwNoMatch;
@@ -113,6 +114,7 @@ export default class Login extends Component {
         pwNoMatch = <p></p>;
       }
 
+      //Sign Up form
       return (
         <div className="SignUp">
           <form onSubmit={this.submitForm}>

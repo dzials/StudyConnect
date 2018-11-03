@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 const JumbotronGreeting = ({ isLoggedIn }) => {
+  //If user not signed in, display a jumbotron with a sign in button
   if(!isLoggedIn) {
     return (
       <React.Fragment>
