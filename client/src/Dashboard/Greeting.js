@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 const JumbotronGreeting = ({ isLoggedIn }) => {
   if(!isLoggedIn) {
@@ -10,7 +11,9 @@ const JumbotronGreeting = ({ isLoggedIn }) => {
           to do so!
         </p>
         <p>
-          <Button bsStyle="success" bsSize="large">Login</Button>
+          <div class="Button">
+          <Link to="/login">Login</Link>
+          </div>
         </p>
       </React.Fragment>
     )
