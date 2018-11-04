@@ -19,10 +19,10 @@ export const fetchCourses = () => (dispatch) => {
   dispatch(fetchingCourses)
 
   return fetch('/api/classes/')
-  .then((res) => {
+  //.then((res) => {
     //console.log(res.json())
-    return res.json()
-  })
+    //return res.json()
+  //})
   .then((json) => {
     dispatch(receiveCourses(json))
   })
