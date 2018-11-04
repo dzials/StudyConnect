@@ -11,7 +11,8 @@ import './App.css';
 export default class App extends Component {
   render() {
     return (
-      <HashRouter>
+     //Create routing for StudyConnect webpage as it is an SPA and traditional url routing must be emulated
+     <HashRouter>
         <div>
           <SCNavbar />
           <div>

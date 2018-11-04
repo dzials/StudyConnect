@@ -1,7 +1,9 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { Button } from 'reactstrap'
 
 const JumbotronGreeting = ({ isLoggedIn }) => {
+  //If user not signed in, display a jumbotron with a sign in button
   if(!isLoggedIn) {
     return (
       <React.Fragment>
@@ -10,7 +12,9 @@ const JumbotronGreeting = ({ isLoggedIn }) => {
           to do so!
         </p>
         <p>
-          <Button bsStyle="success" bsSize="large">Login</Button>
+          <div class="Button">
+          <Button color="success" size="lg" tag={Link} to="/login">Login</Button>
+          </div>
         </p>
       </React.Fragment>
     )
