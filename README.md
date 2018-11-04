@@ -21,4 +21,4 @@ Next, we will cover how to get a development environment started:
 To run the website:
 1. `cd` into the client directory
 2. Run `npm start`
-  2b. If this returns an error, it is likely you do not have the dependencies installed.  The solution to this is to run `npm install` which should install any dependencies and allow you to run the website.
+3. If this returns an error, it is likely you do not have the dependencies installed.  The solution to this is to run `npm install` which should install any dependencies and allow you to run the website.
