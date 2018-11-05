@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import { SET_LOGIN, setLogin } from './../actions/login'
+import { SET_LOGIN, RECEIVE_USER_GROUPS, RECEIVE_USER_COURSES } from './../actions/login'
 
-const initState = {
+const initLogin = {
   isLoggedIn: false,
   token: ''
 }
-const login = (state = initState, action) => {
+const login = (state = initLogin, action) => {
   switch(action.type) {
     case SET_LOGIN:
       let newState = {
@@ -19,6 +19,40 @@ const login = (state = initState, action) => {
   }
 }
 
+const initGroups = {
+  groups: []
+}
+const groups = (state = initGroups, action) => {
+  switch(action.type) {
+    case RECEIVE_USER_GROUPS:
+      let newState = {
+        ...state,
+        groups: action.groups
+      }
+      return newState
+    default:
+      return state
+  }
+}
+
+const initCourses = {
+  courses: []
+}
+const courses = (state = initCourses, action) => {
+  switch(action.type) {
+    case RECEIVE_USER_COURSES:
+      let newState = {
+        ...state,
+        courses: action.courses
+      }
+      return newState
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  login
+  login,
+  groups,
+  courses
 })

@@ -88,3 +88,20 @@ def join_studygroup(request):
 
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
+
+def get_user_groups(request):
+    body = json.loads(request.body)
+    token = body['token']
+
+    rcs = Student.objects.get(token=token).rcs
+    all_groups = Studygroup.objects.all()
+
+    res = []
+    for group in all_groups:
+        participants = json.loads(group.participants)
+        if rcs in participants:
+            res.append( serializers.serialize("json", [group]) )
+
+    res = {'groups': res}
+    print(res)
+    return JsonResponse(res, safe=False)

@@ -41,7 +41,6 @@ export default class GroupList extends Component {
   render() {
     let options = this.props.options
     let onChange = this.props.onChange
-    console.log(this.props.groups)
     return (
       <div>
         <Table striped bordered condensed hover className="Selection-Table">
