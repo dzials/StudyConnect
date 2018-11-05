@@ -5,6 +5,7 @@ import Dashboard from './Dashboard/Dashboard'
 import Selection from './Selection/Selection'
 import Calendar from './Calendar/Calendar'
 import Login from './Login/Login'
+import GroupSelection from './GroupSelection/GroupSelection'
 import SCNavbar from './common/SCNavbar'
 import './App.css';
 
@@ -19,6 +20,7 @@ export default class App extends Component {
             <Route exact path="/selection" component={Selection}/>
             <Route exact path="/calendar" component={Calendar}/>
             <Route exact path="/login" component={Login}/>
+            <Route exact path="/groupselection" component={GroupSelection}/>
           </div>
         </div>
       </HashRouter>

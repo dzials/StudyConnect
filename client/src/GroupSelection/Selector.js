@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Jumbotron } from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 
 export default class Selector extends Component {

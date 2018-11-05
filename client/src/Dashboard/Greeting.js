@@ -1,23 +1,28 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
+import { connect } from 'react-redux'
 
 const JumbotronGreeting = ({ isLoggedIn }) => {
   if(!isLoggedIn) {
     return (
       <React.Fragment>
         <p>
-          Uh oh! It looks like you aren't logged in. Click the button below
-          to do so!
-        </p>
-        <p>
-          <Button bsStyle="success" bsSize="large">Login</Button>
+          Uh oh! It looks like you aren't logged in. Click the login button above to do so!
         </p>
       </React.Fragment>
     )
   }
   return (
-    <div>Logged in!</div>
+    <p>Welcome! Add some classes to get started...</p>
   )
 }
 
-export default JumbotronGreeting
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.login.login.isLoggedIn
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(JumbotronGreeting)

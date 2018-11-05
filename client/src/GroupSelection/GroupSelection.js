@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import { fetchCourses, fetchSections, addSection } from './../actions/courses'
+import { fetchCourses } from './../actions/courses'
+import { fetchGroups, joinGroup } from './../actions/studygroups'
 import Selector from './Selector'
-import SectionList from './SectionList'
+import GroupList from './GroupList'
 
-class Selection extends Component {
+class GroupSelection extends Component {
   componentDidMount() {
     this.props.fetchCourses()
   }
@@ -13,8 +14,8 @@ class Selection extends Component {
   render() {
     return (
       <div className="container">
-        <Selector options={this.props.options} onChange={this.props.fetchSections} />
-        <SectionList sections={this.props.sections} onAdd={this.props.addSection} />
+        <Selector options={this.props.options} onChange={this.props.fetchGroups} />
+        <GroupList groups={this.props.groups} onJoin={this.props.joinGroup} />
       </div>
     )
   }
@@ -25,15 +26,15 @@ const mapDispatchToProps = (dispatch) => {
     fetchCourses: () => {
       dispatch(fetchCourses())
     },
-    fetchSections: (list) => {
+    fetchGroups: (list) => {
       let name = ''
       if(list.length > 0) {
         name = list[0].name
       }
-      dispatch(fetchSections(name))
+      dispatch(fetchGroups(name))
     },
-    addSection: (crn) => {
-      dispatch(addSection(crn))
+    joinGroup: (id) => {
+      dispatch(joinGroup(id))
     }
   }
 }
@@ -41,11 +42,11 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     options: state.courses.courses.courses,
-    sections: state.courses.sections.sections
+    groups: state.studygroups.groups.groups
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Selection)
+)(GroupSelection)

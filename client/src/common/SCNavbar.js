@@ -1,9 +1,54 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-// import './Login.css';
+import { connect } from 'react-redux'
 
 class SCNavbar extends Component {
+  constructor(props) {
+    super(props)
+
+    this.showOptions = this.showOptions.bind(this)
+  }
+
+  showOptions() {
+    // Logged in
+    if(this.props.token && this.props.token != '') {
+      return(
+        <React.Fragment>
+          <LinkContainer to="/selection">
+            <NavItem eventKey={1}>
+              Class Selection
+            </NavItem>
+          </LinkContainer>
+
+          <LinkContainer to="/calendar">
+            <NavItem eventKey={2}>
+              Calendar
+            </NavItem>
+          </LinkContainer>
+
+          <LinkContainer to="/groupselection">
+            <NavItem eventKey={4}>
+              Group Selection
+            </NavItem>
+          </LinkContainer>
+        </React.Fragment>
+      )
+    }
+    // Not logged in
+    else {
+      return(
+        <React.Fragment>
+          <LinkContainer to="/login">
+            <NavItem eventKey={3}>
+              Login
+            </NavItem>
+          </LinkContainer>
+        </React.Fragment>
+      )
+    }
+  }
+
   render() {
     return (
       <div>
@@ -15,25 +60,8 @@ class SCNavbar extends Component {
               </LinkContainer>
             </Navbar.Brand>
           </Navbar.Header>
-          
           <Nav>
-            <LinkContainer to="/selection">
-              <NavItem eventKey={1}>
-                Class Selection
-              </NavItem>
-            </LinkContainer>
-
-            <LinkContainer to="/calendar">
-              <NavItem eventKey={2}>
-                Calendar
-              </NavItem>
-            </LinkContainer>
-
-            <LinkContainer to="/login">
-              <NavItem eventKey={3}>
-                Login
-              </NavItem>
-            </LinkContainer>
+            {this.showOptions()}
           </Nav>
         </Navbar>
       </div>
@@ -41,4 +69,12 @@ class SCNavbar extends Component {
   }
 }
 
-export default SCNavbar;
+const mapStateToProps = (state) => {
+  return {
+    token: state.login.login.token
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(SCNavbar)

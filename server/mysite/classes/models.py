@@ -11,3 +11,7 @@ class Course(models.Model):
     # seats_taken = models.IntegerField()
     # instructors = models.CharField(max_length=500)
     # periods = models.CharField(max_length=1000)
+
+class CRN(models.Model):
+    crn = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)

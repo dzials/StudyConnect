@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-
 import rootReducer from './reducers'
 import { fetchCourses } from './actions/courses'
 import App from './App'
@@ -18,8 +17,6 @@ const store = createStore(
     loggerMiddleware
   )
 )
-
-store.dispatch(fetchCourses())
 
 render(
   <Provider store={store}>

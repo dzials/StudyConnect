@@ -27,10 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'studygroups.apps.StudygroupsConfig',
+    'students.apps.StudentsConfig',
     'classes.apps.ClassesConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+
+import { $POST } from './../util/api'
+import { setLogin } from './../actions/login'
 import "./Login.css"
 
-//TODO: Use fetch API to parcel data to json and query back-end
-//TODO: Have the component source from Redux
-export default class Login extends Component {
-
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -19,6 +21,7 @@ export default class Login extends Component {
 
     this.registerAcct = this.registerAcct.bind(this);
     this.loginToAcct = this.loginToAcct.bind(this);
+    this.displayInvalid = this.displayInvalid.bind(this);
   }
 
   //Make sure form is valid
@@ -46,11 +49,36 @@ export default class Login extends Component {
   //Package form data into appropriate .JSON and query back end
   submitForm = event => {
     event.preventDefault();
+    let body = {
+      email: this.state.email,
+      password: this.state.password,
+      rcs: this.state.rcs
+    }
     if(this.state.isCreateNew) {
-      alert("Account creation to be implemented");
+      $POST('api/students/create_student/', {body: body})
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
     else if(!this.state.isCreateNew) {
-      alert("Login functionality to be implemented");
+      $POST('api/students/auth_student/', {body: body})
+      .then((res) => {
+        // Successfully auth'd
+        if(res.match) {
+          this.props.setLogin(true, res.token)
+          this.setState({toDashboard: true})
+        }
+        // Auth failed
+        else {
+          this.setState({invalidCreds: true})
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   }
 
@@ -64,13 +92,32 @@ export default class Login extends Component {
     this.setState({isCreateNew:false});
   }
 
+  displayInvalid() {
+    if(this.state.invalidCreds) {
+      return(
+        <h4 className="Invalid">Incorrect email/password</h4>
+      )
+    }
+    return(
+      <div></div>
+    )
+  }
+
   render() {
+    // Redirect after logging in
+    if(this.state.toDashboard) {
+      return(
+        <Redirect to="/" />
+      )
+    }
+
     //Login form
     if(!this.state.isCreateNew) {
       return (
         <div className="Login">
           <form onSubmit={this.submitForm}>
             <h2>Login</h2>
+            <div>{this.displayInvalid()}</div>
             <FormGroup controlId="email" bsSize="Large">
               <ControlLabel>Email</ControlLabel>
               <FormControl
@@ -104,7 +151,6 @@ export default class Login extends Component {
     }
     //Sign Up form
     else if(this.state.isCreateNew) {
-
       let pwNoMatch;
       if(!this.pwMatch()) {
         pwNoMatch = <p>Passwords must match!</p>
@@ -166,3 +212,20 @@ export default class Login extends Component {
     }
   }
 }
+
+const mapStateToProps = state => {
+  return {}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setLogin: (isLoggedIn, token) => {
+      dispatch(setLogin(isLoggedIn, token))
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login)
