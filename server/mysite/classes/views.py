@@ -5,6 +5,9 @@ from classes.models import Course
 import json
 
 def index(request):
+    """
+    Fetch the names of all the courses from Mongo.
+    """
     # SELECT name,CRN FROM Course
     courses = Course.objects.all().values('name')
     # Convert the QuerySet to a list object
@@ -13,6 +16,9 @@ def index(request):
     return JsonResponse(courses_list, safe=False)
 
 def get_sections(request):
+    """
+    Fetch all the sections for the given course from Mongo.
+    """
     body = json.loads(request.body)
 
     course_name = body['course_name']

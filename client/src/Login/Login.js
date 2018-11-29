@@ -3,7 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import { $POST } from './../util/api'
+import { $REQUEST } from './../util/api'
 import { setLogin } from './../actions/login'
 import "./Login.css"
 
@@ -52,10 +52,11 @@ class Login extends Component {
     let body = {
       email: this.state.email,
       password: this.state.password,
-      rcs: this.state.rcs
+      rcs: this.state.rcs,
+      type: 'STUDENT'
     }
     if(this.state.isCreateNew) {
-      $POST('api/students/create_student/', {body: body})
+      $REQUEST('api/students/create_user/', {body: body})
       .then((res) => {
         console.log(res)
       })
@@ -64,11 +65,11 @@ class Login extends Component {
       })
     }
     else if(!this.state.isCreateNew) {
-      $POST('api/students/auth_student/', {body: body})
+      $REQUEST('api/students/auth_student/', {body: body})
       .then((res) => {
         // Successfully auth'd
         if(res.match) {
-          this.props.setLogin(true, res.token)
+          this.props.setLogin(true, res.token, res.type)
           this.setState({toDashboard: true})
         }
         // Auth failed
@@ -221,8 +222,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setLogin: (isLoggedIn, token) => {
-      dispatch(setLogin(isLoggedIn, token))
+    setLogin: (isLoggedIn, token, userType) => {
+      dispatch(setLogin(isLoggedIn, token, userType))
     }
   }
 }

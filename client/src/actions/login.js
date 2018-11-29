@@ -1,37 +1,22 @@
-import { $POST } from './../util/api'
+import { $REQUEST } from './../util/api'
+
+// === STRING CONSTANTS === //
 
 export const SET_LOGIN = "SET_LOGIN"
 export const RECEIVE_USER_GROUPS = "RECEIVE_USER_GROUPS"
 export const RECEIVE_USER_COURSES = "RECEIVE_USER_COURSES"
 
-export const setLogin = (isLoggedIn, token) => {
+// Action called when user is first logged in
+export const setLogin = (isLoggedIn, token, userType) => {
   return {
     type: SET_LOGIN,
     isLoggedIn,
-    token
+    token,
+    userType
   }
 }
 
-// =================
-// export const fetchGroups = (course_name) => (dispatch, getState) => {
-//   let state = getState()
-//
-//   let body = {
-//     course_name
-//   }
-//
-//   return $POST('/api/studygroups/get_studygroups/', { body })
-//   .then((res) => {
-//     let json = JSON.parse(res)
-//     dispatch(receiveGroups(json))
-//     console.log(json)
-//   })
-//   .catch((err) => {
-//     console.error(err)
-//   })
-// }
-// =============================
-
+// Action called when user's study groups are received from database
 export const receiveUserGroups = (groups) => {
   return {
     type: RECEIVE_USER_GROUPS,
@@ -39,6 +24,7 @@ export const receiveUserGroups = (groups) => {
   }
 }
 
+// Action to retrieve a user's study groups from the database
 export const getUserGroups = () => (dispatch, getState) => {
   let state = getState()
   let token = state.login.login.token
@@ -47,7 +33,7 @@ export const getUserGroups = () => (dispatch, getState) => {
     token
   }
 
-  return $POST('/api/studygroups/get_user_groups/', { body })
+  return $REQUEST('/api/studygroups/get_user_groups/', { body })
   .then((res) => {
     let parsed_groups = []
     for(let i = 0; i < res.groups.length; i++) {
@@ -62,6 +48,7 @@ export const getUserGroups = () => (dispatch, getState) => {
   })
 }
 
+// Action for when the user receives his/her courses from the database
 export const receiveUserCourses = (courses) => {
   return {
     type: RECEIVE_USER_COURSES,
@@ -69,6 +56,7 @@ export const receiveUserCourses = (courses) => {
   }
 }
 
+// Action for the async request to retrieve a user's courses from the database
 export const getUserCourses = () => (dispatch, getState) => {
   let state = getState()
   let token = state.login.login.token
@@ -77,7 +65,7 @@ export const getUserCourses = () => (dispatch, getState) => {
     token
   }
 
-  return $POST('/api/students/get_user_courses/', { body })
+  return $REQUEST('/api/students/get_user_courses/', { body })
   .then((res) => {
     let json = JSON.parse(res)
     console.log(json)

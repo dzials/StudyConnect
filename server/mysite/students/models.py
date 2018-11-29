@@ -7,3 +7,4 @@ class Student(models.Model):
     rcs = models.CharField(max_length=200)
     token = models.CharField(max_length=200)
     classes = models.CharField(max_length=2000, default='')
+    type = models.CharField(max_length=200)

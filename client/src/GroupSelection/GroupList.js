@@ -3,6 +3,8 @@ import { Table, Button } from 'react-bootstrap'
 
 import './GroupList.css'
 
+// This component will only be shown for students (since professors don't see
+// study groups to join)
 export default class GroupList extends Component {
   constructor(props) {
     super(props)
@@ -10,6 +12,7 @@ export default class GroupList extends Component {
     this.showList = this.showList.bind(this)
   }
 
+  // Render list of study groups
   showList() {
     if(this.props.groups.length > 0) {
       return(

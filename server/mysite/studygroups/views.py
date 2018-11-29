@@ -9,6 +9,10 @@ from studygroups.models import Studygroup
 import json
 
 def gen_bounds():
+    """
+    For use with the scheduling algorithm.
+    Create time bounds that study groups are allowed to occur between.
+    """
     bounds = {}
     for i in range(1, 6):
         init_bounds = []
@@ -19,11 +23,26 @@ def gen_bounds():
 
     return bounds
 
-def create_studygroups(request):
-    all_students = Student.objects.all()
+def delete_studygroups(request):
+    """
+    Remove all study groups from Mongo.
+    """
+    Studygroup.objects.all().delete()
 
+    res = {'res': 'OK'}
+    return JsonResponse(res, safe=False)
+
+def create_studygroups(request):
+    """
+    The scheduling algorithm. Generates all valid study groups and stores them
+    in Mongo.
+    """
+    # Get all courses that all students are taken
+    all_students = Student.objects.all()
     class_set = set()
     for student in all_students:
+        if student.classes == "":
+            continue
         classes = json.loads(student.classes)
 
         for crn in classes['crns']:
@@ -65,7 +84,31 @@ def create_studygroups(request):
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
 
+def create_studygroup(request):
+    """
+    Create a single study group (for use with a professor creating his/her own
+    studygroup)
+    """
+    body = json.loads(request.body)
+    course_name = body['course_name']
+    day = body['day']
+    time = body['time']
+
+    # Get index for next study group to be created
+    max_num = int(Studygroup.objects.all().latest('number').number)
+    number = max_num + 1
+    participants = []
+    new_group = Studygroup(number=number, course_name=course_name, time=time, participants=participants, day=day)
+    new_group.save()
+
+    res = {'res': 'OK'}
+    return JsonResponse(res, safe=False)
+
+
 def get_studygroups(request):
+    """
+    Retrieve all the study groups for a specific course
+    """
     body = json.loads(request.body)
     course_name = body['course_name']
 
@@ -74,8 +117,10 @@ def get_studygroups(request):
     return JsonResponse(res, safe=False)
 
 def join_studygroup(request):
+    """
+    Place a student into the list of participants for a particular study group.
+    """
     body = json.loads(request.body)
-
     group_id = body['group_id']
     token = body['token']
 
@@ -89,7 +134,29 @@ def join_studygroup(request):
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
 
+def leave_studygroup(request):
+    """
+    Remove a student from the list of participants of a study group.
+    """
+    body = json.loads(request.body)
+
+    group_id = body['id']
+    token = body['token']
+
+    rcs = Student.objects.get(token=token).rcs
+    group = Studygroup.objects.get(id=group_id)
+    participants = json.loads(group.participants)
+    participants.remove(rcs)
+    group.participants = json.dumps(participants)
+    group.save()
+
+    res = {'res': 'OK'}
+    return JsonResponse(res, safe=False)
+
 def get_user_groups(request):
+    """
+    Get the list of study groups that a user is a member of.
+    """
     body = json.loads(request.body)
     token = body['token']
 

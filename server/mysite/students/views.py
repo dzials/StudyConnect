@@ -10,7 +10,13 @@ import hashlib
 import os
 import binascii
 
-def create_student(request):
+def create_user(request):
+    """
+    Create a new user account, whether it be STUDENT or PROFESSOR.
+    The actual object creation is handled by the UserFactory.
+    """
+    body = json.loads(request.body)
+
     factory = UserFactory()
     student = factory.getUser('STUDENT', request)
     student.save()
@@ -19,6 +25,10 @@ def create_student(request):
     return JsonResponse(res, safe=False)
 
 def auth_student(request):
+    """
+    For use when a student logs into the system.
+    Authenticate the student and provide a token.
+    """
     body = json.loads(request.body)
 
     email = body['email']
@@ -38,12 +48,16 @@ def auth_student(request):
         token = token.decode()
         student = Student.objects.get(email=email, password=password)
         student.token = token
+        type = student.type
         student.save()
 
-    res = {'match': match, 'token': token}
+    res = {'match': match, 'token': token, 'type': type}
     return JsonResponse(res, safe=False)
 
 def add_section(request):
+    """
+    Add a course's section to a user's list of courses that they are taking.
+    """
     body = json.loads(request.body)
 
     crn = body['crn']
@@ -68,7 +82,37 @@ def add_section(request):
     res = {'res': 'OK', 'crns': match_classes}
     return JsonResponse(res, safe=False)
 
+def leave_section(request):
+    """
+    Remove a course's section to a user's list of courses that they are taking.
+    """
+    body = json.loads(request.body)
+    crn = body['crn']
+    token = body['token']
+
+    match = Student.objects.get(token=token)
+
+    # Remove a section based on storage
+    if match.classes != '':
+        match_classes = json.loads(match.classes)
+        crn_list = match_classes['crns']
+        crn_list.remove(crn)
+        match_classes['crns'] = crn_list
+        match.classes = json.dumps(match_classes)
+        match.save()
+    # No dict defined yet
+    else:
+        match_classes = {}
+        match_classes['crns'] = []
+        match.classes = match_classes
+
+    res = {'res': 'OK', 'crns': match_classes}
+    return JsonResponse(res, safe=False)
+
 def get_user_courses(request):
+    """
+    Retrieve the list of courses that a student is taking
+    """
     body = json.loads(request.body)
     token = body['token']
 
@@ -78,7 +122,7 @@ def get_user_courses(request):
     crns = classes['crns']
     for crn in crns:
         name = CRN.objects.get(crn=crn).name
-        obj = {'course_name': name}
+        obj = {'crn': crn, 'course_name': name}
         res.append(obj)
 
     res = json.dumps(res)

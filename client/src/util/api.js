@@ -1,15 +1,9 @@
-
-// REST verbs
-const GET = 'get'
-const PUT = 'put'
-const POST = 'post'
-const DELETE = 'delete'
-
 // Defines requestHeaders object
 const REQUEST_HEADERS = {
   'Content-Type': 'application/json'
 }
 
+// Generic function for getting a specific cookie by name from the browser
 function getCookie(c_name) {
     var c_value = " " + document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
@@ -28,7 +22,7 @@ function getCookie(c_name) {
 }
 
 // Defines request
-function buildRequest (verb, options) {
+function buildRequest (options) {
   // Defines request headers
   let requestHeaders = { ...REQUEST_HEADERS }
 
@@ -40,7 +34,7 @@ function buildRequest (verb, options) {
   let headers = new Headers(requestHeaders);
   headers.append('X-CSRFToken', csrftoken);
 
-  let req = { method: verb, headers: headers, credentials: 'include' }
+  let req = { method: "POST", headers: headers, credentials: 'include' }
 
   // Appends body to request if it's defined
   if (options.body) req.body = JSON.stringify(options.body)
@@ -57,38 +51,8 @@ function handleErrors (response) {
   return response
 }
 
-// // // //
-
-// $POST helper function
-export const $POST = function (url, options = {}) {
-  return fetch(url, buildRequest(POST, options))
-  .then(handleErrors)
-  .then((response) => { return response.json() })
-}
-
-// // // //
-
-// $GET Helper function
-export const $GET = function (url, options = {}) {
-  return fetch(url, buildRequest(GET, options))
-  .then(handleErrors)
-  .then((response) => { return response.json() })
-}
-
-// // // //
-
-// $PUT helper function
-export const $PUT = function (url, options = {}) {
-  return fetch(url, buildRequest(PUT, options))
-  .then(handleErrors)
-  .then((response) => { return response.json() })
-}
-
-// // // //
-
-// $DEL helper function
-export const $DEL = function (url, options = {}) {
-  return fetch(url, buildRequest(DELETE, options))
+export const $REQUEST = function (url, options = {}) {
+  return fetch(url, buildRequest(options))
   .then(handleErrors)
   .then((response) => { return response.json() })
 }

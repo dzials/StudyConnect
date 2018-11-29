@@ -6,6 +6,7 @@ export default class Selector extends Component {
     let options = this.props.options
     let onChange = this.props.onChange
 
+    // Render the omni-bar to search for study groups
     return (
       <div>
         <h1>
