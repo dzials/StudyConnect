@@ -7,6 +7,8 @@ To get StudyConnect setup on your machine, ensure you have the following install
 1. pip
 2. docker and docker-compose
 3. virtualenv (python virtual environment)
+4. node
+5. npm
 
 Next, we will cover how to get a development environment started:
 1. `cd` into the server directory
