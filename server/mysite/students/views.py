@@ -10,6 +10,7 @@ import hashlib
 import os
 import binascii
 
+
 def create_user(request):
     """
     Create a new user account, whether it be STUDENT or PROFESSOR.
@@ -23,6 +24,7 @@ def create_user(request):
 
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
+
 
 def auth_student(request):
     """
@@ -54,6 +56,7 @@ def auth_student(request):
     res = {'match': match, 'token': token, 'type': type}
     return JsonResponse(res, safe=False)
 
+
 def add_section(request):
     """
     Add a course's section to a user's list of courses that they are taking.
@@ -82,6 +85,7 @@ def add_section(request):
     res = {'res': 'OK', 'crns': match_classes}
     return JsonResponse(res, safe=False)
 
+
 def leave_section(request):
     """
     Remove a course's section to a user's list of courses that they are taking.
@@ -108,6 +112,7 @@ def leave_section(request):
 
     res = {'res': 'OK', 'crns': match_classes}
     return JsonResponse(res, safe=False)
+
 
 def get_user_courses(request):
     """

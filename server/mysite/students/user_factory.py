@@ -3,6 +3,7 @@ from students.models import Student
 import json
 import hashlib
 
+
 class UserFactory:
     """
     A factory used for generating new users. Valid user types are STUDENT and

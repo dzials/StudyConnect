@@ -1,6 +1,7 @@
 from django.db import models
 import json
 
+
 class Course(models.Model):
     name = models.CharField(max_length=200)
     course_id = models.CharField(max_length=200)
@@ -11,6 +12,7 @@ class Course(models.Model):
     # seats_taken = models.IntegerField()
     # instructors = models.CharField(max_length=500)
     # periods = models.CharField(max_length=1000)
+
 
 class CRN(models.Model):
     crn = models.CharField(max_length=200)

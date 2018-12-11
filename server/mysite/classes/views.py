@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from classes.models import Course
 import json
 
+
 def index(request):
     """
     Fetch the names of all the courses from Mongo.
@@ -14,6 +15,7 @@ def index(request):
     courses_list = list(courses)
     print(courses_list)
     return JsonResponse(courses_list, safe=False)
+
 
 def get_sections(request):
     """

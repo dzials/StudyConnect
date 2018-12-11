@@ -3,8 +3,11 @@ from classes.models import Course, CRN
 import requests
 import json
 
+
 def get_courses(apps, schema_editor):
-    yacs_api_call = "https://yacs.cs.rpi.edu/api/v5/courses.json?show_sections&show_periods"
+    yacs_api_call = """
+        https://yacs.cs.rpi.edu/api/v5/courses.json?show_sections&show_periods
+    """
     res = requests.get(yacs_api_call)
     courses = res.json()['courses']
     for course in courses:
@@ -15,7 +18,7 @@ def get_courses(apps, schema_editor):
         # instructors = section['instructors']
         # instructors = json.dumps(instructors)
         # periods = section['periods']
-        #section = json.dumps(periods)
+        # section = json.dumps(periods)
         sections = json.dumps(course['sections'])
         c = Course(name=name, course_id=course_id, sections=sections)
         c.save()
@@ -26,6 +29,7 @@ def get_courses(apps, schema_editor):
             crn = CRN(crn=crn, name=name)
             crn.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -33,5 +37,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        
+
     ]

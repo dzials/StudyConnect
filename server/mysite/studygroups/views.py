@@ -8,6 +8,7 @@ from studygroups.models import Studygroup
 
 import json
 
+
 def gen_bounds():
     """
     For use with the scheduling algorithm.
@@ -17,11 +18,12 @@ def gen_bounds():
     for i in range(1, 6):
         init_bounds = []
         # Initial off-limits bounds will be 12AM-9AM and 9PM-12AM
-        init_bounds.append( (0000, 900) )
-        init_bounds.append( (2100, 2400) )
+        init_bounds.append((0000, 900))
+        init_bounds.append((2100, 2400))
         bounds[str(i)] = init_bounds
 
     return bounds
+
 
 def delete_studygroups(request):
     """
@@ -31,6 +33,7 @@ def delete_studygroups(request):
 
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
+
 
 def create_studygroups(request):
     """
@@ -65,7 +68,8 @@ def create_studygroups(request):
                 bound = (int(period['start']), int(period['end']))
                 bounds[day].append(bound)
 
-        # Now have all bounds that we are not allowed to schedule study groups in
+        # Now have all bounds that we are not
+        # allowed to schedule study groups in
         for day in range(1, 6):
             for time in range(0000, 2500, 100):
                 valid = True
@@ -73,16 +77,23 @@ def create_studygroups(request):
                     if time >= bound[0] and time <= bound[1]:
                         valid = False
                         break
-                # This time doesn't violate any off-limits bounds, so make a session.
+                # This time doesn't violate any off-limits bounds,
+                # so make a session.
                 if valid:
                     participants = []
                     participants = json.dumps(participants)
-                    session = Studygroup(number=group_id, course_name=course_name, time=time, participants=participants, day=day)
+                    session = Studygroup(
+                        number=group_id,
+                        course_name=course_name,
+                        time=time,
+                        participants=participants,
+                        day=day)
                     session.save()
                     group_id = group_id + 1
 
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
+
 
 def create_studygroup(request):
     """
@@ -98,7 +109,12 @@ def create_studygroup(request):
     max_num = int(Studygroup.objects.all().latest('number').number)
     number = max_num + 1
     participants = []
-    new_group = Studygroup(number=number, course_name=course_name, time=time, participants=participants, day=day)
+    new_group = Studygroup(
+        number=number,
+        course_name=course_name,
+        time=time,
+        participants=participants,
+        day=day)
     new_group.save()
 
     res = {'res': 'OK'}
@@ -115,6 +131,7 @@ def get_studygroups(request):
     res = Studygroup.objects.filter(course_name=course_name)
     res = serializers.serialize("json", res)
     return JsonResponse(res, safe=False)
+
 
 def join_studygroup(request):
     """
@@ -133,6 +150,7 @@ def join_studygroup(request):
 
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
+
 
 def leave_studygroup(request):
     """
@@ -153,6 +171,7 @@ def leave_studygroup(request):
     res = {'res': 'OK'}
     return JsonResponse(res, safe=False)
 
+
 def get_user_groups(request):
     """
     Get the list of study groups that a user is a member of.
@@ -167,7 +186,7 @@ def get_user_groups(request):
     for group in all_groups:
         participants = json.loads(group.participants)
         if rcs in participants:
-            res.append( serializers.serialize("json", [group]) )
+            res.append(serializers.serialize("json", [group]))
 
     res = {'groups': res}
     print(res)

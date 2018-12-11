@@ -14,7 +14,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Studygroup',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID')),
                 ('number', models.CharField(max_length=200)),
                 ('course_name', models.CharField(max_length=200)),
                 ('time', models.CharField(max_length=200)),
